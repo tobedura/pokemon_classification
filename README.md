@@ -4,6 +4,24 @@ ResNet50 / ConvNeXt-Base를 이용한 전이학습 전략별 포켓몬 분류 �
 
 ---
 
+## 시작하기
+
+### 데이터 준비
+데이터셋은 Kaggle에서 다운로드 후 `data/PokemonData/` 경로에 위치시켜주세요.
+
+👉 [Pokemon Classification Dataset (Kaggle)](https://www.kaggle.com/datasets/lantian773030/pokemonclassification)
+
+### 모델 가중치
+Exp1~3은 일반 git, **Exp4(ConvNeXt-Base, 335MB)는 Git LFS**로 관리됩니다.
+LFS가 설치되지 않은 경우 아래를 먼저 실행해주세요:
+
+```bash
+git lfs install
+git lfs pull
+```
+
+---
+
 ## 데이터셋
 
 - **출처**: PokemonData (로컬)
