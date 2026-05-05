@@ -50,7 +50,7 @@ git lfs pull
 | Exp1 — ResNet50, Pretrained, Full Finetune | **94.9%** | **0.946** |
 | Exp2 — ResNet50, Pretrained, Frozen        | 53.4% | 0.513 |
 | Exp3 — ResNet50, Scratch, Full Finetune    | 47.5% | 0.438 |
-| Exp4 — ConvNeXt-Base, Pretrained, Full Finetune | TBD | TBD |
+| Exp4 — ConvNeXt-Base, Pretrained, Full Finetune | **97.6%** | **0.977** |
 
 ---
 
@@ -95,6 +95,22 @@ git lfs pull
 - train loss와 val loss가 나란히 감소 → 오버피팅 없음, 언더피팅 상태
 - 10 epoch에서도 계속 상승 중 → epoch을 더 늘리면 추가 향상 가능성 있음
 
+### Exp4 — ConvNeXt-Base, Pretrained, Full Finetune (5 epoch에서 중단)
+
+![exp4 learning curve](results/plots/exp4_convnext_base_pretrained_full_learning_curve.png)
+
+| Epoch | Train Loss | Val Loss | Val Acc |
+|-------|-----------|---------|---------|
+| 1 | 3.7667 | 1.6759 | 89.4% |
+| 2 | 1.0262 | 0.3945 | 96.6% |
+| 3 | 0.3098 | 0.2047 | 97.1% |
+| 4 | 0.1446 | 0.1523 | 97.6% |
+| 5 | 0.0899 | 0.1269 | 97.6% |
+
+- epoch 2만에 96.6% 달성 → ConvNeXt-Base의 강력한 사전학습 피처
+- epoch 4~5에서 val acc 97.6%로 수렴 시작, train loss는 아직 하강 중
+- 5 epoch에서 부득이하게 중단 → 학습이 완전히 수렴하지 않은 상태
+
 ---
 
 ## 분석
@@ -125,10 +141,20 @@ Exp3는 10 epoch 기준으로도 아직 수렴하지 않아 더 많은 epoch이 
 
 | | Exp1 (ResNet50) | Exp4 (ConvNeXt-Base) |
 |--|:--:|:--:|
-| Val Accuracy | 94.9% | TBD |
-| Macro F1 | 0.946 | TBD |
+| Val Accuracy | 94.9% | **97.6%** |
+| Macro F1 | 0.946 | **0.977** |
+| 파라미터 수 | ~25M | ~88M |
+| 학습 Epoch | 10 (완전 수렴) | 5 (중단) |
 
-*(Exp4 학습 완료 후 업데이트 예정)*
+공식 validation set 기준으로는 Exp4(97.6%) > Exp1(94.9%)이지만, 앱에서 직접 이미지를 테스트하면 Exp1이 더 안정적으로 느껴지는 경우가 있습니다. 이유는 다음과 같습니다.
+
+**Exp4가 앱에서 덜 안정적으로 보이는 이유**
+- ConvNeXt-Base는 파라미터가 ~88M으로 ResNet50(~25M)의 3.5배 → 전체 레이어를 fine-tune하려면 더 많은 epoch이 필요
+- Exp4의 train loss(0.0899)는 5 epoch 시점에서도 아직 하강 중 → 학습이 진행 중인 snapshot 상태
+- Exp1은 10 epoch 동안 안정적으로 수렴 (val loss 0.208로 플래토) → 결정 경계가 안정화됨
+- validation set에 없는 외부 이미지에서 Exp4는 아직 충분히 일반화되지 않은 특징을 사용
+
+**결론**: Exp4는 더 강력한 모델이지만 5 epoch는 수렴에 충분하지 않습니다. 10 epoch 이상 완전히 학습하면 Exp1 대비 확실한 성능 우위를 보일 것입니다.
 
 ---
 
@@ -157,9 +183,9 @@ metrics 수치와 더불어 실제 앱으로 이미지를 넣어봤을 때 발�
 
 ## Confusion Matrix
 
-| Exp1 | Exp2 | Exp3 |
-|------|------|------|
-| ![](results/plots/exp1_resnet50_pretrained_full_confusion_matrix.png) | ![](results/plots/exp2_resnet50_pretrained_frozen_confusion_matrix.png) | ![](results/plots/exp3_resnet50_scratch_full_confusion_matrix.png) |
+| Exp1 | Exp2 | Exp3 | Exp4 |
+|------|------|------|------|
+| ![](results/plots/exp1_resnet50_pretrained_full_confusion_matrix.png) | ![](results/plots/exp2_resnet50_pretrained_frozen_confusion_matrix.png) | ![](results/plots/exp3_resnet50_scratch_full_confusion_matrix.png) | ![](results/plots/exp4_convnext_base_pretrained_full_confusion_matrix.png) |
 
 ---
 
