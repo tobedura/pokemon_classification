@@ -24,7 +24,7 @@ git lfs pull
 
 ## 데이터셋
 
-- **출처**: PokemonData (로컬)
+- **출처**: kaggle
 - **클래스 수**: 150개 (1세대 포켓몬)
 - **분할**: Train 80% / Val 20%
 - **Val 샘플 수**: 약 1,430장
@@ -134,12 +134,11 @@ Exp3는 10 epoch 기준으로도 아직 수렴하지 않아 더 많은 epoch이 
 
 ## 앱 테스트 관찰
 
-metrics 수치 외에 실제 앱으로 이미지를 넣어봤을 때 발견한 특징입니다.
+metrics 수치와 더불어 실제 앱으로 이미지를 넣어봤을 때 발견한 특징입니다.
 
 ### Exp1 — 전반적으로 높은 confidence
 - 대부분 이미지에서 top-1 확률이 **70~99%** 수준으로 높게 나옴
 - F1=0인 클래스가 없어 완전히 엉뚱한 예측이 드묾
-- **Alakazam** 입력 시 confidence가 낮을 가능성 있음 (F1: 0.36) — Abra, Kadabra와 외형이 유사한 진화 라인이라 혼동
 
 ### Exp2 — 전반적으로 낮은 confidence
 - 맞는 클래스를 예측하더라도 top-1 확률이 **2~10%** 수준으로 매우 낮음
@@ -161,6 +160,27 @@ metrics 수치 외에 실제 앱으로 이미지를 넣어봤을 때 발견한 �
 | Exp1 | Exp2 | Exp3 |
 |------|------|------|
 | ![](results/plots/exp1_resnet50_pretrained_full_confusion_matrix.png) | ![](results/plots/exp2_resnet50_pretrained_frozen_confusion_matrix.png) | ![](results/plots/exp3_resnet50_scratch_full_confusion_matrix.png) |
+
+---
+
+## 데모 GUI
+
+Streamlit 기반 데모 앱을 제공합니다.
+
+![demo](assets/screenshot.png)
+
+**주요 기능**
+- 4가지 실험 모델 선택 가능 (Exp1~4)
+- 테스트 이미지 입력 방법 3가지
+  - 파일 업로드 (jpg, jpeg, png)
+  - 이미지 URL 입력
+  - Val 갤러리에서 클릭
+- Top-5 예측 결과 및 확률 시각화
+- Val 이미지 갤러리 (페이지네이션)
+
+```bash
+uv run streamlit run app.py
+```
 
 ---
 
