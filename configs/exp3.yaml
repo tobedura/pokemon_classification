@@ -1,0 +1,9 @@
+exp_name: exp3_resnet50_scratch_full
+backbone: resnet50
+pretrained: false
+finetune: full
+epochs: 10
+batch_size: 32
+lr: 0.0001
+img_size: 224
+val_ratio: 0.2
