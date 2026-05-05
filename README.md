@@ -39,7 +39,7 @@ git lfs pull
 | Exp1 | ResNet50 | ✅ ImageNet | Full | 10 | 32 | 1e-4 |
 | Exp2 | ResNet50 | ✅ ImageNet | Frozen | 10 | 32 | 1e-4 |
 | Exp3 | ResNet50 | ❌ Scratch | Full | 10 | 32 | 1e-4 |
-| Exp4 | ConvNeXt-Base | ✅ ImageNet | Full | 10 | 32 | 1e-4 |
+| Exp4 | ConvNeXt-Base | ✅ ImageNet | Full | 5 | 32 | 1e-4 |
 
 ---
 
